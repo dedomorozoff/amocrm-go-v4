@@ -7,27 +7,27 @@ import (
 
 // Account represents AmoCRM account information
 type Account struct {
-	ID                     int    `json:"id"`
-	Name                   string `json:"name"`
-	Subdomain              string `json:"subdomain"`
-	CreatedAt              int64  `json:"created_at"`
-	CreatedBy              int    `json:"created_by"`
-	UpdatedAt              int64  `json:"updated_at"`
-	UpdatedBy              int    `json:"updated_by"`
-	CurrentUserID          int    `json:"current_user_id"`
-	Country                string `json:"country"`
-	Currency               string `json:"currency"`
-	CustomersMode          string `json:"customers_mode"`
-	IsUnsortedOn           bool   `json:"is_unsorted_on"`
-	MobileFeatureVersion   int    `json:"mobile_feature_version"`
-	IsLossReasonEnabled    bool   `json:"is_loss_reason_enabled"`
-	IsHelpbotEnabled       bool   `json:"is_helpbot_enabled"`
-	IsTechnicalAccount     bool   `json:"is_technical_account"`
-	ContactNameDisplayOrder int   `json:"contact_name_display_order"`
-	AmojoID                string `json:"amojo_id,omitempty"`
-	UUID                   string `json:"uuid,omitempty"`
-	Version                int    `json:"version,omitempty"`
-	Embedded               *AccountEmbedded `json:"_embedded,omitempty"`
+	ID                      int              `json:"id"`
+	Name                    string           `json:"name"`
+	Subdomain               string           `json:"subdomain"`
+	CreatedAt               int64            `json:"created_at"`
+	CreatedBy               int              `json:"created_by"`
+	UpdatedAt               int64            `json:"updated_at"`
+	UpdatedBy               int              `json:"updated_by"`
+	CurrentUserID           int              `json:"current_user_id"`
+	Country                 string           `json:"country"`
+	Currency                string           `json:"currency"`
+	CustomersMode           string           `json:"customers_mode"`
+	IsUnsortedOn            bool             `json:"is_unsorted_on"`
+	MobileFeatureVersion    int              `json:"mobile_feature_version"`
+	IsLossReasonEnabled     bool             `json:"is_loss_reason_enabled"`
+	IsHelpbotEnabled        bool             `json:"is_helpbot_enabled"`
+	IsTechnicalAccount      bool             `json:"is_technical_account"`
+	ContactNameDisplayOrder int              `json:"contact_name_display_order"`
+	AmojoID                 string           `json:"amojo_id,omitempty"`
+	UUID                    string           `json:"uuid,omitempty"`
+	Version                 int              `json:"version,omitempty"`
+	Embedded                *AccountEmbedded `json:"_embedded,omitempty"`
 }
 
 // AccountEmbedded represents embedded account data
@@ -38,20 +38,20 @@ type AccountEmbedded struct {
 
 // User represents an AmoCRM user
 type User struct {
-	ID         int    `json:"id"`
-	Name       string `json:"name"`
-	Email      string `json:"email"`
-	Lang       string `json:"lang"`
-	Rights     Rights `json:"rights"`
+	ID     int    `json:"id"`
+	Name   string `json:"name"`
+	Email  string `json:"email"`
+	Lang   string `json:"lang"`
+	Rights Rights `json:"rights"`
 }
 
 // Rights represents user rights
 type Rights struct {
-	IsAdmin       bool   `json:"is_admin"`
-	IsFreeUser    bool   `json:"is_free_user"`
-	IsActiveUser  bool   `json:"is_active_user"`
-	GroupID       int    `json:"group_id,omitempty"`
-	RoleID        int    `json:"role_id,omitempty"`
+	IsAdmin      bool `json:"is_admin"`
+	IsFreeUser   bool `json:"is_free_user"`
+	IsActiveUser bool `json:"is_active_user"`
+	GroupID      int  `json:"group_id,omitempty"`
+	RoleID       int  `json:"role_id,omitempty"`
 }
 
 // Group represents an AmoCRM user group

@@ -80,11 +80,11 @@ func (s *AuthService) GetAuthorizationURL(state string, mode string) (string, er
 	params.Set("client_id", s.client.oauth2Config.ClientID)
 	params.Set("redirect_uri", s.client.oauth2Config.RedirectURI)
 	params.Set("response_type", "code")
-	
+
 	if state != "" {
 		params.Set("state", state)
 	}
-	
+
 	if mode != "" {
 		params.Set("mode", mode) // popup or post_message
 	}

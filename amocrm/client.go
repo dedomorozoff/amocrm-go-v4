@@ -73,12 +73,12 @@ type Client struct {
 	baseURL   string
 
 	// Authentication
-	authType      AuthType
+	authType       AuthType
 	permanentToken string
-	oauth2Config  *OAuth2Config
-	tokenStorage  TokenStorage
-	currentToken  *Token
-	tokenMu       sync.RWMutex
+	oauth2Config   *OAuth2Config
+	tokenStorage   TokenStorage
+	currentToken   *Token
+	tokenMu        sync.RWMutex
 
 	// Rate limiting
 	rateLimiter *rate.Limiter

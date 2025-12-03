@@ -101,14 +101,14 @@ func TestContactsService_List(t *testing.T) {
 
 	// Create client with test server
 	client := &Client{
-		httpClient:      &http.Client{},
-		subdomain:       "test",
-		domain:          "amocrm.ru",
-		baseURL:         server.URL + "/api/v4",
-		authType:        AuthTypePermanentToken,
-		permanentToken:  "test-token",
-		rateLimiter:     rate.NewLimiter(rate.Inf, 1),
-		logger:          slog.New(slog.NewTextHandler(os.Stdout, nil)),
+		httpClient:     &http.Client{},
+		subdomain:      "test",
+		domain:         "amocrm.ru",
+		baseURL:        server.URL + "/api/v4",
+		authType:       AuthTypePermanentToken,
+		permanentToken: "test-token",
+		rateLimiter:    rate.NewLimiter(rate.Inf, 1),
+		logger:         slog.New(slog.NewTextHandler(os.Stdout, nil)),
 	}
 	client.Contacts = &ContactsService{client: client}
 

@@ -7,21 +7,21 @@ import (
 
 // Contact represents an AmoCRM contact
 type Contact struct {
-	ID                  int                 `json:"id,omitempty"`
-	Name                string              `json:"name"`
-	FirstName           string              `json:"first_name,omitempty"`
-	LastName            string              `json:"last_name,omitempty"`
-	ResponsibleUserID   int                 `json:"responsible_user_id,omitempty"`
-	GroupID             int                 `json:"group_id,omitempty"`
-	CreatedBy           int                 `json:"created_by,omitempty"`
-	UpdatedBy           int                 `json:"updated_by,omitempty"`
-	CreatedAt           int64               `json:"created_at,omitempty"`
-	UpdatedAt           int64               `json:"updated_at,omitempty"`
-	ClosestTaskAt       int64               `json:"closest_task_at,omitempty"`
-	CustomFieldsValues  []CustomFieldValue  `json:"custom_fields_values,omitempty"`
-	AccountID           int                 `json:"account_id,omitempty"`
-	Links               *Links              `json:"_links,omitempty"`
-	Embedded            *Embedded           `json:"_embedded,omitempty"`
+	ID                 int                `json:"id,omitempty"`
+	Name               string             `json:"name"`
+	FirstName          string             `json:"first_name,omitempty"`
+	LastName           string             `json:"last_name,omitempty"`
+	ResponsibleUserID  int                `json:"responsible_user_id,omitempty"`
+	GroupID            int                `json:"group_id,omitempty"`
+	CreatedBy          int                `json:"created_by,omitempty"`
+	UpdatedBy          int                `json:"updated_by,omitempty"`
+	CreatedAt          int64              `json:"created_at,omitempty"`
+	UpdatedAt          int64              `json:"updated_at,omitempty"`
+	ClosestTaskAt      int64              `json:"closest_task_at,omitempty"`
+	CustomFieldsValues []CustomFieldValue `json:"custom_fields_values,omitempty"`
+	AccountID          int                `json:"account_id,omitempty"`
+	Links              *Links             `json:"_links,omitempty"`
+	Embedded           *Embedded          `json:"_embedded,omitempty"`
 }
 
 // ContactsService handles communication with contact-related methods
@@ -46,17 +46,17 @@ type Page struct {
 
 // ContactsFilter represents filter options for listing contacts
 type ContactsFilter struct {
-	Query  string
-	Limit  int
-	Page   int
-	With   string // comma-separated list: leads, customers, catalog_elements
-	Order  string // created_at, updated_at, id
+	Query string
+	Limit int
+	Page  int
+	With  string // comma-separated list: leads, customers, catalog_elements
+	Order string // created_at, updated_at, id
 }
 
 // List retrieves a list of contacts
 func (s *ContactsService) List(ctx context.Context, filter *ContactsFilter) ([]Contact, error) {
 	path := "/contacts"
-	
+
 	if filter != nil {
 		path += "?"
 		if filter.Query != "" {
@@ -87,7 +87,7 @@ func (s *ContactsService) List(ctx context.Context, filter *ContactsFilter) ([]C
 // GetByID retrieves a contact by ID
 func (s *ContactsService) GetByID(ctx context.Context, id int) (*Contact, error) {
 	path := fmt.Sprintf("/contacts/%d", id)
-	
+
 	var contact Contact
 	if err := s.client.GetJSON(ctx, path, &contact); err != nil {
 		return nil, err

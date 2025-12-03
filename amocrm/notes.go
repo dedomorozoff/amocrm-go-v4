@@ -9,27 +9,27 @@ import (
 type NoteType string
 
 const (
-	NoteTypeCommon           NoteType = "common"
-	NoteTypeCallIn           NoteType = "call_in"
-	NoteTypeCallOut          NoteType = "call_out"
-	NoteTypeSMSIn            NoteType = "sms_in"
-	NoteTypeSMSOut           NoteType = "sms_out"
-	NoteTypeServiceMessage   NoteType = "service_message"
+	NoteTypeCommon         NoteType = "common"
+	NoteTypeCallIn         NoteType = "call_in"
+	NoteTypeCallOut        NoteType = "call_out"
+	NoteTypeSMSIn          NoteType = "sms_in"
+	NoteTypeSMSOut         NoteType = "sms_out"
+	NoteTypeServiceMessage NoteType = "service_message"
 )
 
 // Note represents an AmoCRM note
 type Note struct {
-	ID             int                    `json:"id,omitempty"`
-	EntityID       int                    `json:"entity_id"`
-	CreatedBy      int                    `json:"created_by,omitempty"`
-	UpdatedBy      int                    `json:"updated_by,omitempty"`
-	CreatedAt      int64                  `json:"created_at,omitempty"`
-	UpdatedAt      int64                  `json:"updated_at,omitempty"`
-	ResponsibleUserID int                 `json:"responsible_user_id,omitempty"`
-	GroupID        int                    `json:"group_id,omitempty"`
-	NoteType       NoteType               `json:"note_type"`
-	Params         map[string]interface{} `json:"params"`
-	AccountID      int                    `json:"account_id,omitempty"`
+	ID                int                    `json:"id,omitempty"`
+	EntityID          int                    `json:"entity_id"`
+	CreatedBy         int                    `json:"created_by,omitempty"`
+	UpdatedBy         int                    `json:"updated_by,omitempty"`
+	CreatedAt         int64                  `json:"created_at,omitempty"`
+	UpdatedAt         int64                  `json:"updated_at,omitempty"`
+	ResponsibleUserID int                    `json:"responsible_user_id,omitempty"`
+	GroupID           int                    `json:"group_id,omitempty"`
+	NoteType          NoteType               `json:"note_type"`
+	Params            map[string]interface{} `json:"params"`
+	AccountID         int                    `json:"account_id,omitempty"`
 }
 
 // NotesService handles communication with note-related methods

@@ -9,29 +9,29 @@ import (
 type TaskType int
 
 const (
-	TaskTypeCall  TaskType = 1
-	TaskTypeMeet  TaskType = 2
-	TaskTypeMail  TaskType = 3
+	TaskTypeCall TaskType = 1
+	TaskTypeMeet TaskType = 2
+	TaskTypeMail TaskType = 3
 )
 
 // Task represents an AmoCRM task
 type Task struct {
-	ID             int    `json:"id,omitempty"`
-	CreatedBy      int    `json:"created_by,omitempty"`
-	UpdatedBy      int    `json:"updated_by,omitempty"`
-	CreatedAt      int64  `json:"created_at,omitempty"`
-	UpdatedAt      int64  `json:"updated_at,omitempty"`
-	ResponsibleUserID int `json:"responsible_user_id,omitempty"`
-	GroupID        int    `json:"group_id,omitempty"`
-	EntityID       int    `json:"entity_id,omitempty"`
-	EntityType     string `json:"entity_type,omitempty"` // leads, contacts, companies, customers
-	IsCompleted    bool   `json:"is_completed,omitempty"`
-	TaskTypeID     int    `json:"task_type_id,omitempty"`
-	Text           string `json:"text"`
-	Duration       int    `json:"duration,omitempty"`
-	CompleteTill   int64  `json:"complete_till"`
-	Result         *TaskResult `json:"result,omitempty"`
-	AccountID      int    `json:"account_id,omitempty"`
+	ID                int         `json:"id,omitempty"`
+	CreatedBy         int         `json:"created_by,omitempty"`
+	UpdatedBy         int         `json:"updated_by,omitempty"`
+	CreatedAt         int64       `json:"created_at,omitempty"`
+	UpdatedAt         int64       `json:"updated_at,omitempty"`
+	ResponsibleUserID int         `json:"responsible_user_id,omitempty"`
+	GroupID           int         `json:"group_id,omitempty"`
+	EntityID          int         `json:"entity_id,omitempty"`
+	EntityType        string      `json:"entity_type,omitempty"` // leads, contacts, companies, customers
+	IsCompleted       bool        `json:"is_completed,omitempty"`
+	TaskTypeID        int         `json:"task_type_id,omitempty"`
+	Text              string      `json:"text"`
+	Duration          int         `json:"duration,omitempty"`
+	CompleteTill      int64       `json:"complete_till"`
+	Result            *TaskResult `json:"result,omitempty"`
+	AccountID         int         `json:"account_id,omitempty"`
 }
 
 // TaskResult represents task completion result
@@ -55,12 +55,12 @@ type TasksResponse struct {
 
 // TasksFilter represents filter options for listing tasks
 type TasksFilter struct {
-	Limit       int
-	Page        int
-	Filter      map[string]interface{}
-	Order       string
+	Limit             int
+	Page              int
+	Filter            map[string]interface{}
+	Order             string
 	ResponsibleUserID int
-	IsCompleted *bool
+	IsCompleted       *bool
 }
 
 // List retrieves a list of tasks
