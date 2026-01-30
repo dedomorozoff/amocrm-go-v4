@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/dedomorozoff/amocrm-go-v4/amocrm"
+	"github.com/ALipckin/amocrm-go-v4/amocrm"
 )
 
 // FileStorage implements TokenStorage using the file system

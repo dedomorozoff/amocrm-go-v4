@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/dedomorozoff/amocrm-go-v4/amocrm"
-	"github.com/dedomorozoff/amocrm-go-v4/amocrm/storage"
+	"github.com/ALipckin/amocrm-go-v4/amocrm"
+	"github.com/ALipckin/amocrm-go-v4/amocrm/storage"
 )
 
 func main() {
@@ -37,25 +37,25 @@ func main() {
 	if !hasToken {
 		// Первичная авторизация
 		fmt.Println("=== Первичная авторизация ===")
-		
+
 		// Получаем URL для авторизации
 		authURL, err := client.Auth.GetAuthorizationURL("random-state", "")
 		if err != nil {
 			log.Fatalf("Ошибка получения URL авторизации: %v", err)
 		}
-		
+
 		fmt.Printf("Перейдите по ссылке для авторизации:\n%s\n\n", authURL)
 		fmt.Print("Введите код авторизации: ")
-		
+
 		var authCode string
 		fmt.Scanln(&authCode)
-		
+
 		// Обмениваем код на токен
 		err = client.Auth.ExchangeCode(ctx, authCode)
 		if err != nil {
 			log.Fatalf("Ошибка обмена кода: %v", err)
 		}
-		
+
 		fmt.Println("Авторизация успешна! Токен сохранен.\n")
 	} else {
 		fmt.Println("=== Используем сохраненный токен ===\n")
@@ -69,7 +69,7 @@ func main() {
 
 	fmt.Printf("Аккаунт: %s\n", account.Name)
 	fmt.Printf("Текущий пользователь ID: %d\n", account.CurrentUserID)
-	
+
 	if account.Embedded != nil && len(account.Embedded.Users) > 0 {
 		fmt.Println("\nПользователи:")
 		for _, user := range account.Embedded.Users {
@@ -111,7 +111,7 @@ func main() {
 		fmt.Printf("\n=== Информация о токене ===\n")
 		fmt.Printf("Тип токена: %s\n", currentToken.TokenType)
 		fmt.Printf("Истекает: %s\n", currentToken.ExpiresAt.Format("2006-01-02 15:04:05"))
-		
+
 		if currentToken.IsExpired() {
 			fmt.Println("⚠️  Токен истек, будет автоматически обновлен при следующем запросе")
 		} else {

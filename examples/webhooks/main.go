@@ -4,9 +4,8 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"time"
 
-	"github.com/dedomorozoff/amocrm-go-v4/amocrm"
+	"github.com/ALipckin/amocrm-go-v4/amocrm"
 )
 
 func main() {
@@ -55,7 +54,7 @@ func main() {
 	// Пример обработки входящего webhook
 	fmt.Println("=== Обработка входящего webhook ===")
 	fmt.Println("Пример структуры для обработки webhook:")
-	
+
 	exampleWebhookData := `
 	{
 		"leads": {
@@ -77,7 +76,7 @@ func main() {
 		}
 	}
 	`
-	
+
 	fmt.Println(exampleWebhookData)
 
 	fmt.Println("\n=== Готово! ===")

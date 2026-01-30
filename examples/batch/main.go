@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/dedomorozoff/amocrm-go-v4/amocrm"
+	"github.com/ALipckin/amocrm-go-v4/amocrm"
 )
 
 func main() {
@@ -19,7 +19,7 @@ func main() {
 
 	// Пакетное создание контактов
 	fmt.Println("=== Пакетное создание контактов ===")
-	
+
 	contacts := []*amocrm.Contact{
 		{
 			Name:      "Контакт 1",
@@ -50,7 +50,7 @@ func main() {
 
 	// Пакетное обновление
 	fmt.Println("\n=== Пакетное обновление контактов ===")
-	
+
 	for i := range createdContacts {
 		createdContacts[i].Name = fmt.Sprintf("Обновленный %s", createdContacts[i].Name)
 	}
@@ -73,7 +73,7 @@ func main() {
 
 	// Пакетное создание сделок
 	fmt.Println("\n=== Пакетное создание сделок ===")
-	
+
 	leads := []*amocrm.Lead{
 		{Name: "Сделка 1", Price: 10000},
 		{Name: "Сделка 2", Price: 20000},

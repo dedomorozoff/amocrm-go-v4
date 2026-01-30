@@ -17,7 +17,7 @@ import (
     "context"
     "log"
     
-    "github.com/dedomorozoff/amocrm-go-v4/amocrm"
+    "github.com/ALipckin/amocrm-go-v4/amocrm"
 )
 
 func main() {

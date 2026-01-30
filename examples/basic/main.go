@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/dedomorozoff/amocrm-go-v4/amocrm"
+	"github.com/ALipckin/amocrm-go-v4/amocrm"
 )
 
 func main() {
@@ -81,8 +81,8 @@ func main() {
 	lead := &amocrm.Lead{
 		Name:       "Новая сделка",
 		Price:      100000,
-		PipelineID: 1,      // ID воронки (замените на реальный)
-		StatusID:   142,    // ID статуса (замените на реальный)
+		PipelineID: 1,   // ID воронки (замените на реальный)
+		StatusID:   142, // ID статуса (замените на реальный)
 	}
 
 	createdLead, err := client.Leads.Create(ctx, lead)
