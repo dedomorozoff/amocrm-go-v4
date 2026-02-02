@@ -97,8 +97,9 @@ type UsersResponse struct {
 	Embedded struct {
 		Users []User `json:"users"`
 	} `json:"_embedded"`
-	Links Links `json:"_links"`
-	Page  Page  `json:"_page,omitempty"`
+	Links     Links `json:"_links"`
+	Page      int   `json:"_page"`
+	PageCount int   `json:"_page_count"`
 }
 
 type UsersFilter struct {

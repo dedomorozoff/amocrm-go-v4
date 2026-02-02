@@ -16,22 +16,22 @@ const (
 
 // Task represents an AmoCRM task
 type Task struct {
-	ID                int         `json:"id,omitempty"`
-	CreatedBy         int         `json:"created_by,omitempty"`
-	UpdatedBy         int         `json:"updated_by,omitempty"`
-	CreatedAt         int64       `json:"created_at,omitempty"`
-	UpdatedAt         int64       `json:"updated_at,omitempty"`
-	ResponsibleUserID int         `json:"responsible_user_id,omitempty"`
-	GroupID           int         `json:"group_id,omitempty"`
-	EntityID          int         `json:"entity_id,omitempty"`
-	EntityType        string      `json:"entity_type,omitempty"` // leads, contacts, companies, customers
-	IsCompleted       bool        `json:"is_completed,omitempty"`
-	TaskTypeID        int         `json:"task_type_id,omitempty"`
-	Text              string      `json:"text"`
-	Duration          int         `json:"duration,omitempty"`
-	CompleteTill      int64       `json:"complete_till"`
-	Result            *TaskResult `json:"result,omitempty"`
-	AccountID         int         `json:"account_id,omitempty"`
+	ID                int        `json:"id,omitempty"`
+	CreatedBy         int        `json:"created_by,omitempty"`
+	UpdatedBy         int        `json:"updated_by,omitempty"`
+	CreatedAt         int64      `json:"created_at,omitempty"`
+	UpdatedAt         int64      `json:"updated_at,omitempty"`
+	ResponsibleUserID int        `json:"responsible_user_id,omitempty"`
+	GroupID           int        `json:"group_id,omitempty"`
+	EntityID          int        `json:"entity_id,omitempty"`
+	EntityType        string     `json:"entity_type,omitempty"` // leads, contacts, companies, customers
+	IsCompleted       bool       `json:"is_completed,omitempty"`
+	TaskTypeID        int        `json:"task_type_id,omitempty"`
+	Text              string     `json:"text"`
+	Duration          int        `json:"duration,omitempty"`
+	CompleteTill      int64      `json:"complete_till"`
+	Result            TaskResult `json:"result,omitempty"`
+	AccountID         int        `json:"account_id,omitempty"`
 }
 
 // TaskResult represents task completion result
@@ -50,7 +50,7 @@ type TasksResponse struct {
 		Tasks []Task `json:"tasks"`
 	} `json:"_embedded"`
 	Links Links `json:"_links"`
-	Page  Page  `json:"_page,omitempty"`
+	Page  int   `json:"_page"`
 }
 
 // TasksFilter represents filter options for listing tasks
@@ -183,7 +183,7 @@ func (s *TasksService) Complete(ctx context.Context, taskID int, resultText stri
 	task := &Task{
 		ID:          taskID,
 		IsCompleted: true,
-		Result: &TaskResult{
+		Result: TaskResult{
 			Text: resultText,
 		},
 	}

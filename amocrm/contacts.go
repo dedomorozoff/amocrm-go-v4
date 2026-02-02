@@ -35,13 +35,7 @@ type ContactsResponse struct {
 		Contacts []Contact `json:"contacts"`
 	} `json:"_embedded"`
 	Links Links `json:"_links"`
-	Page  Page  `json:"_page,omitempty"`
-}
-
-// Page represents pagination information
-type Page struct {
-	Size  int `json:"size,omitempty"`
-	Count int `json:"count,omitempty"`
+	Page  int   `json:"_page"`
 }
 
 // ContactsFilter represents filter options for listing contacts

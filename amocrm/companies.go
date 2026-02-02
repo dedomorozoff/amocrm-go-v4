@@ -33,7 +33,7 @@ type CompaniesResponse struct {
 		Companies []Company `json:"companies"`
 	} `json:"_embedded"`
 	Links Links `json:"_links"`
-	Page  Page  `json:"_page,omitempty"`
+	Page  int   `json:"_page"`
 }
 
 // CompaniesFilter represents filter options for listing companies

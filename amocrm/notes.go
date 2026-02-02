@@ -43,7 +43,7 @@ type NotesResponse struct {
 		Notes []Note `json:"notes"`
 	} `json:"_embedded"`
 	Links Links `json:"_links"`
-	Page  Page  `json:"_page,omitempty"`
+	Page  int   `json:"_page"`
 }
 
 // NotesFilter represents filter options for listing notes

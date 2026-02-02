@@ -99,6 +99,10 @@ type Client struct {
 	Auth      *AuthService
 	Users     *UserService
 	Roles     *RoleService
+	Pipelines *PipelinesService
+	TaskTypes *TaskTypesService
+	Tags      *TagsService
+	Events    *EventsService
 }
 
 // AuthType represents the type of authentication
@@ -246,6 +250,10 @@ func NewClient(opts ...ClientOption) *Client {
 	client.Auth = &AuthService{client: client}
 	client.Users = &UserService{client: client}
 	client.Roles = &RoleService{client: client}
+	client.Pipelines = &PipelinesService{client: client}
+	client.TaskTypes = &TaskTypesService{client: client}
+	client.Tags = &TagsService{client: client}
+	client.Events = &EventsService{client: client}
 
 	// Load token if using OAuth2
 	if client.authType == AuthTypeOAuth2 && client.tokenStorage != nil {
