@@ -18,7 +18,7 @@ Go-библиотека для работы с REST API [amoCRM](https://www.amo
 ## Установка
 
 ```bash
-go get github.com/dedomorozoff/amocrm-go-v4
+go get github.com/ALipckin/amocrm-go-v4
 ```
 
 ## Быстрый старт
