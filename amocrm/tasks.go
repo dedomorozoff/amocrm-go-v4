@@ -46,21 +46,32 @@ type TaskResult struct {
 // - Array with data: [{"text": "some text"}]
 // - Empty array: []
 // - Empty object: {}
+// - null
 func (tr *TaskResult) UnmarshalJSON(data []byte) error {
-	if len(data) == 0 {
+	if len(data) == 0 || string(data) == "null" {
+		tr.Text = ""
+		return nil
+	}
+
+	// Trim whitespace
+	trimmed := data
+	for len(trimmed) > 0 && (trimmed[0] == ' ' || trimmed[0] == '\t' || trimmed[0] == '\n' || trimmed[0] == '\r') {
+		trimmed = trimmed[1:]
+	}
+	if len(trimmed) == 0 {
 		tr.Text = ""
 		return nil
 	}
 
 	// Check if it's an array
-	if data[0] == '[' {
-		type taskResultAlias struct {
+	if trimmed[0] == '[' {
+		type taskResultItem struct {
 			Text string `json:"text"`
 		}
 
-		var arrResult []taskResultAlias
+		var arrResult []taskResultItem
 		if err := json.Unmarshal(data, &arrResult); err != nil {
-			return err
+			return fmt.Errorf("failed to unmarshal result array: %w", err)
 		}
 
 		// Handle empty array or take first element
@@ -73,13 +84,13 @@ func (tr *TaskResult) UnmarshalJSON(data []byte) error {
 	}
 
 	// Handle object format
-	type taskResultAlias struct {
+	type taskResultObj struct {
 		Text string `json:"text"`
 	}
 
-	var objResult taskResultAlias
+	var objResult taskResultObj
 	if err := json.Unmarshal(data, &objResult); err != nil {
-		return err
+		return fmt.Errorf("failed to unmarshal result object: %w", err)
 	}
 
 	tr.Text = objResult.Text
@@ -118,8 +129,8 @@ type TasksFilter struct {
 	IsCompleted       *bool
 }
 
-// List retrieves a list of tasks
-func (s *TasksService) List(ctx context.Context, filter *TasksFilter) ([]Task, error) {
+// ListWithResponse retrieves a list of tasks with full response including pagination links
+func (s *TasksService) ListWithResponse(ctx context.Context, filter *TasksFilter) (*TasksResponse, error) {
 	path := "/tasks"
 
 	if filter != nil {
@@ -144,6 +155,16 @@ func (s *TasksService) List(ctx context.Context, filter *TasksFilter) ([]Task, e
 
 	var resp TasksResponse
 	if err := s.client.GetJSON(ctx, path, &resp); err != nil {
+		return nil, err
+	}
+
+	return &resp, nil
+}
+
+// List retrieves a list of tasks
+func (s *TasksService) List(ctx context.Context, filter *TasksFilter) ([]Task, error) {
+	resp, err := s.ListWithResponse(ctx, filter)
+	if err != nil {
 		return nil, err
 	}
 
