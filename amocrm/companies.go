@@ -45,8 +45,8 @@ type CompaniesFilter struct {
 	Order string // created_at, updated_at, id
 }
 
-// List retrieves a list of companies
-func (s *CompaniesService) List(ctx context.Context, filter *CompaniesFilter) ([]Company, error) {
+// ListWithResponse retrieves a list of companies with full response including pagination links
+func (s *CompaniesService) ListWithResponse(ctx context.Context, filter *CompaniesFilter) (*CompaniesResponse, error) {
 	path := "/companies"
 
 	if filter != nil {
@@ -70,6 +70,16 @@ func (s *CompaniesService) List(ctx context.Context, filter *CompaniesFilter) ([
 
 	var resp CompaniesResponse
 	if err := s.client.GetJSON(ctx, path, &resp); err != nil {
+		return nil, err
+	}
+
+	return &resp, nil
+}
+
+// List retrieves a list of companies
+func (s *CompaniesService) List(ctx context.Context, filter *CompaniesFilter) ([]Company, error) {
+	resp, err := s.ListWithResponse(ctx, filter)
+	if err != nil {
 		return nil, err
 	}
 

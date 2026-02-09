@@ -47,8 +47,8 @@ type ContactsFilter struct {
 	Order string // created_at, updated_at, id
 }
 
-// List retrieves a list of contacts
-func (s *ContactsService) List(ctx context.Context, filter *ContactsFilter) ([]Contact, error) {
+// ListWithResponse retrieves a list of contacts with full response including pagination links
+func (s *ContactsService) ListWithResponse(ctx context.Context, filter *ContactsFilter) (*ContactsResponse, error) {
 	path := "/contacts"
 
 	if filter != nil {
@@ -72,6 +72,16 @@ func (s *ContactsService) List(ctx context.Context, filter *ContactsFilter) ([]C
 
 	var resp ContactsResponse
 	if err := s.client.GetJSON(ctx, path, &resp); err != nil {
+		return nil, err
+	}
+
+	return &resp, nil
+}
+
+// List retrieves a list of contacts
+func (s *ContactsService) List(ctx context.Context, filter *ContactsFilter) ([]Contact, error) {
+	resp, err := s.ListWithResponse(ctx, filter)
+	if err != nil {
 		return nil, err
 	}
 

@@ -88,21 +88,22 @@ type Client struct {
 	debug  bool
 
 	// API Services
-	Account   *AccountService
-	Contacts  *ContactsService
-	Companies *CompaniesService
-	Leads     *LeadsService
-	Tasks     *TasksService
-	Notes     *NotesService
-	Webhooks  *WebhooksService
-	Catalogs  *CatalogsService
-	Auth      *AuthService
-	Users     *UserService
-	Roles     *RoleService
-	Pipelines *PipelinesService
-	TaskTypes *TaskTypesService
-	Tags      *TagsService
-	Events    *EventsService
+	Account    *AccountService
+	Contacts   *ContactsService
+	Companies  *CompaniesService
+	Leads      *LeadsService
+	Tasks      *TasksService
+	Notes      *NotesService
+	Webhooks   *WebhooksService
+	Catalogs   *CatalogsService
+	Auth       *AuthService
+	Users      *UserService
+	Roles      *RoleService
+	Pipelines  *PipelinesService
+	TaskTypes  *TaskTypesService
+	Tags       *TagsService
+	Events     *EventsService
+	Pagination *PaginationService
 }
 
 // AuthType represents the type of authentication
@@ -254,6 +255,7 @@ func NewClient(opts ...ClientOption) *Client {
 	client.TaskTypes = &TaskTypesService{client: client}
 	client.Tags = &TagsService{client: client}
 	client.Events = &EventsService{client: client}
+	client.Pagination = &PaginationService{client: client}
 
 	// Load token if using OAuth2
 	if client.authType == AuthTypeOAuth2 && client.tokenStorage != nil {

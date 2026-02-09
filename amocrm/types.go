@@ -41,11 +41,18 @@ type Tag struct {
 // Links represents entity links
 type Links struct {
 	Self Link `json:"self,omitempty"`
+	Next Link `json:"next,omitempty"`
+	Prev Link `json:"prev,omitempty"`
 }
 
 // Link represents a single link
 type Link struct {
 	Href string `json:"href,omitempty"`
+}
+
+// HasNext returns true if there is a next page
+func (l Links) HasNext() bool {
+	return l.Next.Href != ""
 }
 
 // Embedded represents common embedded data

@@ -56,8 +56,8 @@ type LeadsFilter struct {
 	UpdatedAt  map[string]int64 // filter by updated_at: map["from"]=timestamp, map["to"]=timestamp
 }
 
-// List retrieves a list of leads
-func (s *LeadsService) List(ctx context.Context, filter *LeadsFilter) ([]Lead, error) {
+// ListWithResponse retrieves a list of leads with full response including pagination links
+func (s *LeadsService) ListWithResponse(ctx context.Context, filter *LeadsFilter) (*LeadsResponse, error) {
 	path := "/leads"
 
 	if filter != nil {
@@ -95,6 +95,16 @@ func (s *LeadsService) List(ctx context.Context, filter *LeadsFilter) ([]Lead, e
 
 	var resp LeadsResponse
 	if err := s.client.GetJSON(ctx, path, &resp); err != nil {
+		return nil, err
+	}
+
+	return &resp, nil
+}
+
+// List retrieves a list of leads
+func (s *LeadsService) List(ctx context.Context, filter *LeadsFilter) ([]Lead, error) {
+	resp, err := s.ListWithResponse(ctx, filter)
+	if err != nil {
 		return nil, err
 	}
 
