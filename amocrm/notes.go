@@ -43,7 +43,7 @@ type NotesResponse struct {
 		Notes []Note `json:"notes"`
 	} `json:"_embedded"`
 	Links Links `json:"_links"`
-	Page  Page  `json:"_page,omitempty"`
+	Page  int   `json:"_page"`
 }
 
 // NotesFilter represents filter options for listing notes
@@ -57,6 +57,15 @@ type NotesFilter struct {
 
 // List retrieves a list of notes for an entity
 func (s *NotesService) List(ctx context.Context, entityType EntityType, entityID int, filter *NotesFilter) ([]Note, error) {
+	resp, err := s.ListWithResponse(ctx, entityType, entityID, filter)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Embedded.Notes, nil
+}
+
+// ListWithResponse retrieves notes with full response including pagination links
+func (s *NotesService) ListWithResponse(ctx context.Context, entityType EntityType, entityID int, filter *NotesFilter) (*NotesResponse, error) {
 	path := fmt.Sprintf("/%s/%d/notes", entityType, entityID)
 
 	if filter != nil {
@@ -77,7 +86,17 @@ func (s *NotesService) List(ctx context.Context, entityType EntityType, entityID
 		return nil, err
 	}
 
-	return resp.Embedded.Notes, nil
+	return &resp, nil
+}
+
+// ListContactCallNotes fetches all call notes (call_in, call_out) for a contact with pagination
+func (s *NotesService) ListContactCallNotes(ctx context.Context, contactID int, limit, page int) (*NotesResponse, error) {
+	filter := &NotesFilter{
+		Limit:    limit,
+		Page:     page,
+		NoteType: []NoteType{NoteTypeCallIn, NoteTypeCallOut},
+	}
+	return s.ListWithResponse(ctx, EntityTypeContact, contactID, filter)
 }
 
 // GetByID retrieves a note by ID

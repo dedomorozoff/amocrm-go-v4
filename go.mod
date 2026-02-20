@@ -1,4 +1,4 @@
-module github.com/dedomorozoff/amocrm-go-v4
+module github.com/ALipckin/amocrm-go-v4
 
 go 1.21
 

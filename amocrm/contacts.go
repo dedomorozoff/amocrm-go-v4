@@ -35,13 +35,7 @@ type ContactsResponse struct {
 		Contacts []Contact `json:"contacts"`
 	} `json:"_embedded"`
 	Links Links `json:"_links"`
-	Page  Page  `json:"_page,omitempty"`
-}
-
-// Page represents pagination information
-type Page struct {
-	Size  int `json:"size,omitempty"`
-	Count int `json:"count,omitempty"`
+	Page  int   `json:"_page"`
 }
 
 // ContactsFilter represents filter options for listing contacts
@@ -53,8 +47,8 @@ type ContactsFilter struct {
 	Order string // created_at, updated_at, id
 }
 
-// List retrieves a list of contacts
-func (s *ContactsService) List(ctx context.Context, filter *ContactsFilter) ([]Contact, error) {
+// ListWithResponse retrieves a list of contacts with full response including pagination links
+func (s *ContactsService) ListWithResponse(ctx context.Context, filter *ContactsFilter) (*ContactsResponse, error) {
 	path := "/contacts"
 
 	if filter != nil {
@@ -78,6 +72,16 @@ func (s *ContactsService) List(ctx context.Context, filter *ContactsFilter) ([]C
 
 	var resp ContactsResponse
 	if err := s.client.GetJSON(ctx, path, &resp); err != nil {
+		return nil, err
+	}
+
+	return &resp, nil
+}
+
+// List retrieves a list of contacts
+func (s *ContactsService) List(ctx context.Context, filter *ContactsFilter) ([]Contact, error) {
+	resp, err := s.ListWithResponse(ctx, filter)
+	if err != nil {
 		return nil, err
 	}
 

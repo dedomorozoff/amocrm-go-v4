@@ -88,15 +88,22 @@ type Client struct {
 	debug  bool
 
 	// API Services
-	Account   *AccountService
-	Contacts  *ContactsService
-	Companies *CompaniesService
-	Leads     *LeadsService
-	Tasks     *TasksService
-	Notes     *NotesService
-	Webhooks  *WebhooksService
-	Catalogs  *CatalogsService
-	Auth      *AuthService
+	Account    *AccountService
+	Contacts   *ContactsService
+	Companies  *CompaniesService
+	Leads      *LeadsService
+	Tasks      *TasksService
+	Notes      *NotesService
+	Webhooks   *WebhooksService
+	Catalogs   *CatalogsService
+	Auth       *AuthService
+	Users      *UserService
+	Roles      *RoleService
+	Pipelines  *PipelinesService
+	TaskTypes  *TaskTypesService
+	Tags       *TagsService
+	Events     *EventsService
+	Pagination *PaginationService
 }
 
 // AuthType represents the type of authentication
@@ -242,6 +249,13 @@ func NewClient(opts ...ClientOption) *Client {
 	client.Webhooks = &WebhooksService{client: client}
 	client.Catalogs = &CatalogsService{client: client}
 	client.Auth = &AuthService{client: client}
+	client.Users = &UserService{client: client}
+	client.Roles = &RoleService{client: client}
+	client.Pipelines = &PipelinesService{client: client}
+	client.TaskTypes = &TaskTypesService{client: client}
+	client.Tags = &TagsService{client: client}
+	client.Events = &EventsService{client: client}
+	client.Pagination = &PaginationService{client: client}
 
 	// Load token if using OAuth2
 	if client.authType == AuthTypeOAuth2 && client.tokenStorage != nil {
@@ -425,6 +439,10 @@ func (c *Client) GetJSON(ctx context.Context, path string, result interface{}) e
 		return err
 	}
 	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusNoContent {
+		return nil
+	}
 
 	return json.NewDecoder(resp.Body).Decode(result)
 }

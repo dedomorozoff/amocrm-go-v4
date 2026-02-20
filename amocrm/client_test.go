@@ -2,9 +2,14 @@ package amocrm
 
 import (
 	"context"
+	"log/slog"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
+	"time"
+
+	"golang.org/x/time/rate"
 )
 
 func TestNewClient(t *testing.T) {
@@ -60,7 +65,7 @@ func TestAPIError(t *testing.T) {
 func TestTokenIsExpired(t *testing.T) {
 	// Test expired token
 	expiredToken := &Token{
-		ExpiresAt: timeNow().Add(-1 * time.Hour),
+		ExpiresAt: time.Now().Add(-1 * time.Hour),
 	}
 
 	if !expiredToken.IsExpired() {
@@ -69,7 +74,7 @@ func TestTokenIsExpired(t *testing.T) {
 
 	// Test valid token
 	validToken := &Token{
-		ExpiresAt: timeNow().Add(1 * time.Hour),
+		ExpiresAt: time.Now().Add(1 * time.Hour),
 	}
 
 	if validToken.IsExpired() {

@@ -18,7 +18,7 @@ Go-библиотека для работы с REST API [amoCRM](https://www.amo
 ## Установка
 
 ```bash
-go get github.com/dedomorozoff/amocrm-go-v4
+go get github.com/ALipckin/amocrm-go-v4
 ```
 
 ## Быстрый старт
@@ -33,7 +33,7 @@ import (
     "fmt"
     "log"
     
-    "github.com/dedomorozoff/amocrm-go-v4/amocrm"
+    "github.com/ALipckin/amocrm-go-v4/amocrm"
 )
 
 func main() {
@@ -65,8 +65,8 @@ import (
     "fmt"
     "log"
     
-    "github.com/dedomorozoff/amocrm-go-v4/amocrm"
-    "github.com/dedomorozoff/amocrm-go-v4/amocrm/storage"
+    "github.com/ALipckin/amocrm-go-v4/amocrm"
+    "github.com/ALipckin/amocrm-go-v4/amocrm/storage"
 )
 
 func main() {
@@ -338,7 +338,7 @@ client := amocrm.NewClient(
 
 ## Примеры
 
-Больше примеров в директории [examples/](./examples):
+Больше примеров в директории [examples/](examples):
 
 - [OAuth 2.0 авторизация](./examples/oauth2/)
 - [Работа с контактами](./examples/contacts/)
@@ -347,8 +347,6 @@ client := amocrm.NewClient(
 - [Пакетные операции](./examples/batch/)
 
 ## Документация
-
-Полная документация доступна на [pkg.go.dev](https://pkg.go.dev/github.com/dedomorozoff/amocrm-go-v4)
 
 Официальная документация AmoCRM API v4: https://www.amocrm.ru/developers/content/crm_platform/api-reference
 

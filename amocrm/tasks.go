@@ -2,6 +2,7 @@ package amocrm
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 )
 
@@ -16,27 +17,92 @@ const (
 
 // Task represents an AmoCRM task
 type Task struct {
-	ID                int         `json:"id,omitempty"`
-	CreatedBy         int         `json:"created_by,omitempty"`
-	UpdatedBy         int         `json:"updated_by,omitempty"`
-	CreatedAt         int64       `json:"created_at,omitempty"`
-	UpdatedAt         int64       `json:"updated_at,omitempty"`
-	ResponsibleUserID int         `json:"responsible_user_id,omitempty"`
-	GroupID           int         `json:"group_id,omitempty"`
-	EntityID          int         `json:"entity_id,omitempty"`
-	EntityType        string      `json:"entity_type,omitempty"` // leads, contacts, companies, customers
-	IsCompleted       bool        `json:"is_completed,omitempty"`
-	TaskTypeID        int         `json:"task_type_id,omitempty"`
-	Text              string      `json:"text"`
-	Duration          int         `json:"duration,omitempty"`
-	CompleteTill      int64       `json:"complete_till"`
-	Result            *TaskResult `json:"result,omitempty"`
-	AccountID         int         `json:"account_id,omitempty"`
+	ID                int        `json:"id,omitempty"`
+	CreatedBy         int        `json:"created_by,omitempty"`
+	UpdatedBy         int        `json:"updated_by,omitempty"`
+	CreatedAt         int64      `json:"created_at,omitempty"`
+	UpdatedAt         int64      `json:"updated_at,omitempty"`
+	ResponsibleUserID int        `json:"responsible_user_id,omitempty"`
+	GroupID           int        `json:"group_id,omitempty"`
+	EntityID          int        `json:"entity_id,omitempty"`
+	EntityType        string     `json:"entity_type,omitempty"` // leads, contacts, companies, customers
+	IsCompleted       bool       `json:"is_completed,omitempty"`
+	TaskTypeID        int        `json:"task_type_id,omitempty"`
+	Text              string     `json:"text"`
+	Duration          int        `json:"duration,omitempty"`
+	CompleteTill      int64      `json:"complete_till"`
+	Result            TaskResult `json:"result,omitempty"`
+	AccountID         int        `json:"account_id,omitempty"`
 }
 
 // TaskResult represents task completion result
+// Handles both object {"text": "..."} and array [{"text": "..."}] formats from API
 type TaskResult struct {
-	Text string `json:"text,omitempty"`
+	Text string
+}
+
+// UnmarshalJSON implements custom unmarshaling to handle multiple API formats:
+// - Object: {"text": "some text"}
+// - Array with data: [{"text": "some text"}]
+// - Empty array: []
+// - Empty object: {}
+// - null
+func (tr *TaskResult) UnmarshalJSON(data []byte) error {
+	if len(data) == 0 || string(data) == "null" {
+		tr.Text = ""
+		return nil
+	}
+
+	// Trim whitespace
+	trimmed := data
+	for len(trimmed) > 0 && (trimmed[0] == ' ' || trimmed[0] == '\t' || trimmed[0] == '\n' || trimmed[0] == '\r') {
+		trimmed = trimmed[1:]
+	}
+	if len(trimmed) == 0 {
+		tr.Text = ""
+		return nil
+	}
+
+	// Check if it's an array
+	if trimmed[0] == '[' {
+		type taskResultItem struct {
+			Text string `json:"text"`
+		}
+
+		var arrResult []taskResultItem
+		if err := json.Unmarshal(data, &arrResult); err != nil {
+			return fmt.Errorf("failed to unmarshal result array: %w", err)
+		}
+
+		// Handle empty array or take first element
+		if len(arrResult) > 0 {
+			tr.Text = arrResult[0].Text
+		} else {
+			tr.Text = ""
+		}
+		return nil
+	}
+
+	// Handle object format
+	type taskResultObj struct {
+		Text string `json:"text"`
+	}
+
+	var objResult taskResultObj
+	if err := json.Unmarshal(data, &objResult); err != nil {
+		return fmt.Errorf("failed to unmarshal result object: %w", err)
+	}
+
+	tr.Text = objResult.Text
+	return nil
+}
+
+// MarshalJSON implements custom marshaling to always output as object format
+func (tr TaskResult) MarshalJSON() ([]byte, error) {
+	type taskResultAlias struct {
+		Text string `json:"text"`
+	}
+	return json.Marshal(taskResultAlias{Text: tr.Text})
 }
 
 // TasksService handles communication with task-related methods
@@ -50,7 +116,7 @@ type TasksResponse struct {
 		Tasks []Task `json:"tasks"`
 	} `json:"_embedded"`
 	Links Links `json:"_links"`
-	Page  Page  `json:"_page,omitempty"`
+	Page  int   `json:"_page"`
 }
 
 // TasksFilter represents filter options for listing tasks
@@ -63,8 +129,8 @@ type TasksFilter struct {
 	IsCompleted       *bool
 }
 
-// List retrieves a list of tasks
-func (s *TasksService) List(ctx context.Context, filter *TasksFilter) ([]Task, error) {
+// ListWithResponse retrieves a list of tasks with full response including pagination links
+func (s *TasksService) ListWithResponse(ctx context.Context, filter *TasksFilter) (*TasksResponse, error) {
 	path := "/tasks"
 
 	if filter != nil {
@@ -89,6 +155,16 @@ func (s *TasksService) List(ctx context.Context, filter *TasksFilter) ([]Task, e
 
 	var resp TasksResponse
 	if err := s.client.GetJSON(ctx, path, &resp); err != nil {
+		return nil, err
+	}
+
+	return &resp, nil
+}
+
+// List retrieves a list of tasks
+func (s *TasksService) List(ctx context.Context, filter *TasksFilter) ([]Task, error) {
+	resp, err := s.ListWithResponse(ctx, filter)
+	if err != nil {
 		return nil, err
 	}
 
@@ -183,7 +259,7 @@ func (s *TasksService) Complete(ctx context.Context, taskID int, resultText stri
 	task := &Task{
 		ID:          taskID,
 		IsCompleted: true,
-		Result: &TaskResult{
+		Result: TaskResult{
 			Text: resultText,
 		},
 	}

@@ -2,7 +2,6 @@ package amocrm
 
 import (
 	"context"
-	"fmt"
 )
 
 // Account represents AmoCRM account information
@@ -34,30 +33,6 @@ type Account struct {
 type AccountEmbedded struct {
 	Users  []User  `json:"users,omitempty"`
 	Groups []Group `json:"groups,omitempty"`
-}
-
-// User represents an AmoCRM user
-type User struct {
-	ID     int    `json:"id"`
-	Name   string `json:"name"`
-	Email  string `json:"email"`
-	Lang   string `json:"lang"`
-	Rights Rights `json:"rights"`
-}
-
-// Rights represents user rights
-type Rights struct {
-	IsAdmin      bool `json:"is_admin"`
-	IsFreeUser   bool `json:"is_free_user"`
-	IsActiveUser bool `json:"is_active_user"`
-	GroupID      int  `json:"group_id,omitempty"`
-	RoleID       int  `json:"role_id,omitempty"`
-}
-
-// Group represents an AmoCRM user group
-type Group struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
 }
 
 // AccountService handles communication with account-related methods

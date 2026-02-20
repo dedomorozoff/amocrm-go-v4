@@ -41,7 +41,7 @@ type LeadsResponse struct {
 		Leads []Lead `json:"leads"`
 	} `json:"_embedded"`
 	Links Links `json:"_links"`
-	Page  Page  `json:"_page,omitempty"`
+	Page  int   `json:"_page"`
 }
 
 // LeadsFilter represents filter options for listing leads
@@ -53,10 +53,11 @@ type LeadsFilter struct {
 	Order      string // created_at, updated_at, id, closed_at
 	StatusID   []int
 	PipelineID int
+	UpdatedAt  map[string]int64 // filter by updated_at: map["from"]=timestamp, map["to"]=timestamp
 }
 
-// List retrieves a list of leads
-func (s *LeadsService) List(ctx context.Context, filter *LeadsFilter) ([]Lead, error) {
+// ListWithResponse retrieves a list of leads with full response including pagination links
+func (s *LeadsService) ListWithResponse(ctx context.Context, filter *LeadsFilter) (*LeadsResponse, error) {
 	path := "/leads"
 
 	if filter != nil {
@@ -82,10 +83,28 @@ func (s *LeadsService) List(ctx context.Context, filter *LeadsFilter) ([]Lead, e
 		for _, statusID := range filter.StatusID {
 			path += fmt.Sprintf("filter[statuses][0][status_id]=%d&", statusID)
 		}
+		if filter.UpdatedAt != nil {
+			if from, ok := filter.UpdatedAt["from"]; ok {
+				path += fmt.Sprintf("filter[updated_at][from]=%d&", from)
+			}
+			if to, ok := filter.UpdatedAt["to"]; ok {
+				path += fmt.Sprintf("filter[updated_at][to]=%d&", to)
+			}
+		}
 	}
 
 	var resp LeadsResponse
 	if err := s.client.GetJSON(ctx, path, &resp); err != nil {
+		return nil, err
+	}
+
+	return &resp, nil
+}
+
+// List retrieves a list of leads
+func (s *LeadsService) List(ctx context.Context, filter *LeadsFilter) ([]Lead, error) {
+	resp, err := s.ListWithResponse(ctx, filter)
+	if err != nil {
 		return nil, err
 	}
 
